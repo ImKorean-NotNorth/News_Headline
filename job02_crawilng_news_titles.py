@@ -37,6 +37,9 @@ for k in range(2, 4):
     # 크롤링 한 제목들이 저장될 리스트.
     titles = []
 
+    # 크롤링 한 제목들이 저장될 리스트.
+    titles = []
+
     # 웹 페이지 열기
     url = f'https://news.naver.com/section/10{k}'
 
@@ -74,6 +77,7 @@ for k in range(2, 4):
                 # 그걸 리스트에 추가
                 titles.append(title)
 
+                #디버깅용
                 print(title)
             except:
                 print(i, j)
@@ -102,4 +106,26 @@ print(df_titles['category'].value_counts())
 # 시간은 나노초 단위까지 구분 가능하다.
 df_titles.to_csv(f'./crawling_data/naver_headline_news_2_3_{datetime.datetime.now().strftime("%y%m%d")}.csv',
                  index=False)
+
+
+
+
+# 나눠진 CSV 파일3개를 합쳐서 하나의 CSV로 저장함.
+df1 = pd.read_csv('./crawling_data/naver_headline_news_0_1_241219.csv')
+df2 = pd.read_csv('./crawling_data/naver_headline_news_2_3_241219.csv')
+df3 = pd.read_csv('./crawling_data/naver_headline_news_4_5_241219.csv')
+
+
+df_titles = pd.concat([df1, df2], axis='rows', ignore_index=True)
+df_titles = pd.concat([df_titles, df3], axis='rows', ignore_index=True)
+
+
+df_titles.to_csv(f'./crawling_data/naver_headline_news_241219.csv', index=False)
+
+
+df_titles.info()
+print(df_titles['category'].value_counts())
+
+
+
 
